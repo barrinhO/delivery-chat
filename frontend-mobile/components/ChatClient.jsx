@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { io } from "socket.io-client";
 
-const socket = io("http://10.1.156.8:3000", {
+const socket = io("http://10.1.156.97:3000", {
   transports: ["websocket"],
   autoConnect: true,
 });
@@ -60,12 +60,29 @@ export default function ChatClient() {
         <FlatList
           data={messages}
           renderItem={({ item }) => (
-            <View style={styles.msgBox}>
-              <Text style={styles.msgText}>
-                <Text style={styles.sender}>{item.sender}: </Text>
-                {item.text}
-              </Text>
-              <Text style={styles.time}>{item.time}</Text>
+            <View
+              style={[
+                styles.msgWrapper,
+                item.sender === "cliente"
+                  ? styles.msgRight
+                  : styles.msgLeft,
+              ]}
+            >
+              <View style={styles.msgBox}>
+                <Text style={styles.msgText}>
+                  <Text
+                    style={{
+                      color:
+                        item.sender === "cliente" ? "#22c55e" : "#3b82f6",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {item.sender}:
+                  </Text>{" "}
+                  {item.text}
+                </Text>
+                <Text style={styles.time}>{item.time}</Text>
+              </View>
             </View>
           )}
           keyExtractor={(_, i) => i.toString()}
@@ -82,7 +99,7 @@ export default function ChatClient() {
             onChangeText={setMessage}
           />
 
-          <TouchableOpacity style={styles.button} onPress={sendMessage}>
+          <TouchableOpacity style={[styles.button]} onPress={sendMessage}>
             <Text style={styles.buttonText}>Enviar</Text>
           </TouchableOpacity>
         </View>
@@ -92,12 +109,7 @@ export default function ChatClient() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    paddingTop: 60,
-  },
-
+  container: { flex: 1, padding: 20, paddingTop: 60 },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -105,33 +117,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
-
+  msgWrapper: { maxWidth: "80%", marginBottom: 12 },
+  msgRight: { alignSelf: "flex-end" },
+  msgLeft: { alignSelf: "flex-start" },
   msgBox: {
     padding: 12,
-    marginBottom: 12,
     backgroundColor: "#1f2937",
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#374151",
   },
-
-  msgText: {
-    fontSize: 16,
-    color: "#e5e7eb",
-  },
-
-  sender: {
-    color: "#fcd34d",
-    fontWeight: "bold",
-  },
-
+  msgText: { fontSize: 16, color: "#e5e7eb" },
   time: {
     fontSize: 10,
     color: "#9ca3af",
     marginTop: 5,
     textAlign: "right",
   },
-
   inputArea: {
     flexDirection: "row",
     alignItems: "center",
@@ -139,7 +141,6 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingBottom: 10,
   },
-
   input: {
     flex: 1,
     borderColor: "#374151",
@@ -149,16 +150,11 @@ const styles = StyleSheet.create({
     color: "#e5e7eb",
     borderRadius: 10,
   },
-
   button: {
-    backgroundColor: "#f59e0b",
+    backgroundColor: "#22c55e",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 10,
   },
-
-  buttonText: {
-    color: "#1f2937",
-    fontWeight: "bold",
-  },
+  buttonText: { color: "#1f2937", fontWeight: "bold" },
 });
