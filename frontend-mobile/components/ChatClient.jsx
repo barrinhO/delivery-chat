@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Keyboard
 import { io } from "socket.io-client";
 import axios from "axios";
 
-const API_URL = "http://192.168.224.1:3000";
+const API_URL = "http://192.168.1.14:3000";
 const socket = io(API_URL, { transports: ["websocket"] });
 
 export default function App() {
