@@ -7,8 +7,9 @@ import LoginScreen from "./LoginScreen";
 import RegisterScreen from "./RegisterScreen";
 import UserListScreen from "./UserListScreen";
 import ChatScreen from "./ChatScreen";
+import { lightTheme, darkTheme } from "../styles/theme";
 
-const API_URL = "http://10.1.156.231:3000";
+const API_URL = "http://26.105.105.149:3000";
 const socket = io(API_URL, { transports: ["websocket"] });
 
 export default function ChatClient() {
@@ -25,6 +26,10 @@ export default function ChatClient() {
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  const [theme, setTheme] = useState(darkTheme);
+  const toggleTheme = () =>
+    setTheme(theme === darkTheme ? lightTheme : darkTheme);
 
   useEffect(() => {
     socket.on("receive_message", (msg) =>
@@ -91,6 +96,8 @@ export default function ChatClient() {
           setPassword={setPassword}
           login={login}
           setScreen={setScreen}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       ) : screen === "register" ? (
         <RegisterScreen
@@ -104,9 +111,16 @@ export default function ChatClient() {
           setRole={setRole}
           register={register}
           setScreen={setScreen}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       ) : screen === "userlist" ? (
-        <UserListScreen users={users} selectUser={selectUser} />
+        <UserListScreen
+          users={users}
+          selectUser={selectUser}
+          theme={theme}
+          toggleTheme={toggleTheme}
+        />
       ) : (
         <ChatScreen
           selectedUser={selectedUser}
@@ -115,6 +129,8 @@ export default function ChatClient() {
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       )}
     </KeyboardAvoidingView>

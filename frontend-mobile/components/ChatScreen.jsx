@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { globalStyles } from "../styles/global";
 
 export default function ChatScreen({
   selectedUser,
@@ -15,7 +16,11 @@ export default function ChatScreen({
   message,
   setMessage,
   sendMessage,
+  theme,
+  toggleTheme,
 }) {
+  const styles = globalStyles(theme);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Chat com {selectedUser?.name}</Text>
@@ -28,48 +33,38 @@ export default function ChatScreen({
             style={{
               alignSelf:
                 item.sender_id === user?.id ? "flex-end" : "flex-start",
-              backgroundColor: "#222",
+              backgroundColor:
+                item.sender_id === user?.id ? theme.primary : theme.card,
               padding: 8,
               marginVertical: 4,
               borderRadius: 8,
+              maxWidth: "80%",
             }}
           >
-            <Text style={{ color: "#fff" }}>{item.content}</Text>
-            <Text style={{ color: "#888", fontSize: 10 }}>{item.time}</Text>
+            <Text style={{ color: theme.text }}>{item.content}</Text>
+            <Text style={{ color: theme.textMuted, fontSize: 10 }}>
+              {item.time}
+            </Text>
           </View>
         )}
       />
 
       <View style={{ flexDirection: "row" }}>
         <TextInput
-          style={styles.inputMsg}
+          style={styles.input}
           value={message}
           onChangeText={setMessage}
           placeholder="Digite uma mensagem"
-          placeholderTextColor="#888"
+          placeholderTextColor={theme.textMuted}
         />
-        <TouchableOpacity style={styles.sendBtn} onPress={sendMessage}>
-          <Text>Enviar</Text>
+        <TouchableOpacity style={styles.button} onPress={sendMessage}>
+          <Text style={styles.btnText}>Enviar</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity style={{ marginTop: 10 }} onPress={toggleTheme}>
+        <Text style={{ color: theme.textMuted }}>Alterar Tema</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#111", padding: 20, paddingTop: 60 },
-  title: { color: "#fff", fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  inputMsg: {
-    flex: 1,
-    backgroundColor: "#333",
-    color: "#fff",
-    padding: 10,
-    borderRadius: 8,
-  },
-  sendBtn: {
-    padding: 10,
-    backgroundColor: "#0f0",
-    marginLeft: 5,
-    borderRadius: 8,
-  },
-});

@@ -1,16 +1,18 @@
 import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import { globalStyles } from "../styles/global";
 
-export default function UserListScreen({ users, selectUser }) {
+export default function UserListScreen({
+  users,
+  selectUser,
+  theme,
+  toggleTheme,
+}) {
+  const styles = globalStyles(theme);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Selecione um usuário</Text>
+      <Text style={styles.title}>Selecione um Usuário</Text>
 
       <FlatList
         data={users}
@@ -20,23 +22,17 @@ export default function UserListScreen({ users, selectUser }) {
             style={styles.userBtn}
             onPress={() => selectUser(item)}
           >
-            <Text style={{ color: "#fff" }}>
+            <Text style={{ color: theme.text }}>
               {item.name} ({item.role})
             </Text>
           </TouchableOpacity>
         )}
       />
+
+      <TouchableOpacity style={{ marginTop: 20 }} onPress={toggleTheme}>
+        <Text style={{ color: theme.textMuted }}>Alterar Tema</Text>
+      </TouchableOpacity>
     </View>
   );
+  a;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#111", padding: 20, paddingTop: 60 },
-  title: { color: "#fff", fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  userBtn: {
-    padding: 15,
-    backgroundColor: "#333",
-    marginBottom: 10,
-    borderRadius: 8,
-  },
-});

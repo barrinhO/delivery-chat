@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { globalStyles } from "../styles/global";
 
 export default function RegisterScreen({
   name,
@@ -18,7 +12,11 @@ export default function RegisterScreen({
   setRole,
   register,
   setScreen,
+  theme,
+  toggleTheme,
 }) {
+  const styles = globalStyles(theme);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Cadastro</Text>
@@ -26,12 +24,14 @@ export default function RegisterScreen({
       <TextInput
         style={styles.input}
         placeholder="Nome"
+        placeholderTextColor={theme.textMuted}
         value={name}
         onChangeText={setName}
       />
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={theme.textMuted}
         value={email}
         onChangeText={setEmail}
       />
@@ -39,12 +39,14 @@ export default function RegisterScreen({
         style={styles.input}
         placeholder="Senha"
         secureTextEntry
+        placeholderTextColor={theme.textMuted}
         value={password}
         onChangeText={setPassword}
       />
       <TextInput
         style={styles.input}
         placeholder="Role: cliente ou atendente"
+        placeholderTextColor={theme.textMuted}
         value={role}
         onChangeText={setRole}
       />
@@ -54,27 +56,12 @@ export default function RegisterScreen({
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => setScreen("login")}>
-        <Text style={{ color: "#00f" }}>Voltar</Text>
+        <Text style={{ color: theme.primary, marginTop: 10 }}>Voltar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{ marginTop: 20 }} onPress={toggleTheme}>
+        <Text style={{ color: theme.textMuted }}>Alterar Tema</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#111", padding: 20, paddingTop: 60 },
-  title: { color: "#fff", fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  input: {
-    backgroundColor: "#222",
-    color: "#fff",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 8,
-  },
-  button: {
-    backgroundColor: "#0f0",
-    padding: 12,
-    alignItems: "center",
-    borderRadius: 8,
-  },
-  btnText: { color: "#000", fontWeight: "bold" },
-});

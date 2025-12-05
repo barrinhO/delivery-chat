@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { globalStyles } from "../styles/global";
 
 export default function LoginScreen({
   email,
@@ -14,7 +8,11 @@ export default function LoginScreen({
   setPassword,
   login,
   setScreen,
+  theme,
+  toggleTheme,
 }) {
+  const styles = globalStyles(theme);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
@@ -22,6 +20,7 @@ export default function LoginScreen({
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={theme.textMuted}
         value={email}
         onChangeText={setEmail}
       />
@@ -29,36 +28,25 @@ export default function LoginScreen({
         style={styles.input}
         placeholder="Senha"
         secureTextEntry
+        placeholderTextColor={theme.textMuted}
         value={password}
         onChangeText={setPassword}
       />
 
       <TouchableOpacity style={styles.button} onPress={login}>
-        <Text style={styles.btnText}>Login</Text>
+        <Text style={styles.btnText}>Entrar</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => setScreen("register")}>
-        <Text style={{ color: "#00f" }}>Criar conta</Text>
+        <Text style={{ color: theme.primary, marginTop: 10 }}>Criar conta</Text>
+      </TouchableOpacity>
+
+      {/* Botão Toggle Tema */}
+      <TouchableOpacity style={{ marginTop: 20 }} onPress={toggleTheme}>
+        <Text style={{ color: theme.textMuted }}>
+          Alterar tema (Claro/Escuro)
+        </Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#111", padding: 20, paddingTop: 60 },
-  title: { color: "#fff", fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  input: {
-    backgroundColor: "#222",
-    color: "#fff",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 8,
-  },
-  button: {
-    backgroundColor: "#0f0",
-    padding: 12,
-    alignItems: "center",
-    borderRadius: 8,
-  },
-  btnText: { color: "#000", fontWeight: "bold" },
-});
