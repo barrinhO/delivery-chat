@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function ChatBox({ user, selectedUser, messages, sendMessage }) {
+export default function ChatBox({
+  user,
+  selectedUser,
+  messages,
+  sendMessage,
+  goBack,
+}) {
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef(null);
 
   const handleSend = () => {
     if (!message.trim()) return;
@@ -9,10 +16,22 @@ export default function ChatBox({ user, selectedUser, messages, sendMessage }) {
     setMessage("");
   };
 
+  // Scroll automático
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-900 p-6">
-      <h1 className="text-3xl font-bold text-amber-400 mb-6">
-        Chat com {selectedUser.name}
+      <h1 className="text-3xl font-bold text-amber-400 mb-4 flex items-center w-full max-w-xl justify-between">
+        <button
+          className="px-2 py-1 bg-gray-700 rounded text-white"
+          onClick={goBack}
+        >
+          ← Voltar
+        </button>
+        <span>Chat com {selectedUser.name}</span>
+        <span className="w-16"></span>
       </h1>
 
       <div className="w-full max-w-xl h-96 bg-gray-800 rounded-lg p-4 overflow-y-auto mb-4">
@@ -38,6 +57,7 @@ export default function ChatBox({ user, selectedUser, messages, sendMessage }) {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="flex w-full max-w-xl gap-2">
@@ -46,6 +66,7 @@ export default function ChatBox({ user, selectedUser, messages, sendMessage }) {
           placeholder="Digite uma mensagem..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
 
         <button
